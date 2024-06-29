@@ -145,8 +145,6 @@ function Home() {
       generateBars();
   }, []); // Dependency array is empty, so this effect runs only once
 
-  
-
   const generateBars = (): void => {
     const newBars = Array.from({ length: 20 }, (_, index) => {
       const height = Math.floor(Math.random() * (10 - 4 + 1)) + 4; // Random height between 4 and 10
@@ -167,7 +165,16 @@ function Home() {
       </p>
       <img src={currentImage} alt="Album cover" />
       <div className="flex items-end space-x-1 rounded-xl bg-slate-900 p-2">
-        {bars}
+      <div className={`${styles.boxContainer}`}>
+        <div className={`${styles.box } ${styles.box1}`}></div>
+        <div className={`${styles.box } ${styles.box2}`}></div>
+        <div className={`${styles.box } ${styles.box3}`}></div>
+        <div className={`${styles.box } ${styles.box4}`}></div>
+        <div className={`${styles.box } ${styles.box5}`}></div>
+        <div className={`${styles.box } ${styles.box6}`}></div>
+        <div className={`${styles.box } ${styles.box7}`}></div>
+        <div className={`${styles.box } ${styles.box8}`}></div>
+      </div>
       </div>
       <h1 className="text-white font-bold">Album</h1>
       <p className="text-white">{currentAlbum}</p>
