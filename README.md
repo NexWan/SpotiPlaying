@@ -1,3 +1,26 @@
+# SpotiPlaying
+
+## You can see the development progress on the dev branch!
+
+This is a small project I'm making to create an embeded option so you can add to any of your html projects!.  
+I'm creating this app using:
+- ReactJS
+- NextJS
+- Spotify API
+
+## What's already done?
+- Connecting the api with the app
+- Deploying the user playing information
+- Design of the now playing (still missing some stuff and might change)
+### Image of how it looks at the moment
+<img src='./gitImgs/preview.png'>
+
+## What's missing?
+- The main problem right now it's how to obfuscate the user auth token, since I don't want to expose it on the url I'm trying to figure out a relationship between userid and auth token using vercel databases. Might end up changing the provider depnding on if I figure out something.  
+- Personalization of the card
+- Converting HTLM to IMG, I'm still searching for a library to do this!
+
+## Run on local
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
