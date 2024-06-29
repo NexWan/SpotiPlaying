@@ -13,6 +13,18 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      "font-family": {
+        montserrat: ["Montserrat", "sans-serif"],
+      },
+      keyframes: {
+        wave: {
+          '0%, 100%': { transform: 'scaleY(0.5)' },
+          '50%': { transform: 'scaleY(1)' },
+        }
+      },
+      animation: {
+        wave: 'wave 1s ease-in-out infinite',
+      }
     },
   },
   plugins: [],
