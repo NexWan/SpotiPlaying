@@ -9,7 +9,7 @@ interface SpotiUser {
 
 export async function GET() {
     const {rows} = await sql`SELECT * FROM spotiuser`
-    return rows
+    return Response.json({message: rows});
 }
 
 export async function POST(request: Request) {
