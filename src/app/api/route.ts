@@ -1,7 +1,6 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
-import { getRefreshToken } from "./db/route";
 
 /*
     * This is an example of an API route that requires a user to be logged in.
@@ -30,8 +29,17 @@ export async function POST(req:NextRequest, res:NextRequest) {
         if(auth) {
             const userId = cookieStore.get("userId");
             if (userId) {
-              getRefreshToken(userId as unknown as string);
+                await fetch("http://localhost:3000/api/db", {
+                    method: "POST",
+                    body: JSON.stringify({user: userId, auth: auth})
+                }).then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`API error: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
             }
+
             return NextResponse.json({message: "You are already logged in!", status: 200})
         }
         return NextResponse.json({message: "You are already logged in!", status: 400})

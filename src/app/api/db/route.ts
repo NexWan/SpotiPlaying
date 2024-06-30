@@ -7,7 +7,6 @@ interface SpotiUser {
     auth: string;
 }
 
-
 export async function GET() {
     const {rows} = await sql`SELECT * FROM spotiuser`
     return rows
