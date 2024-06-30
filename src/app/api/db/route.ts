@@ -1,6 +1,5 @@
 import {sql} from "@vercel/postgres"
 import { log } from "console";
-import { get } from "http";
 import { cookies } from "next/headers";
 
 interface SpotiUser {
@@ -35,42 +34,16 @@ export async function POST(request: Request) {
         cookieStore.set({name: "userId", value: parsedBody.user})
         cookieStore.set({name: "authToken", value: parsedBody.auth})
         cookieStore.set({name: "refreshToken", value: ""})
-        await getRefreshToken(parsedBody.user) // Now awaiting the result
         return Response.json(rows[0]);
     } catch (error) {
         log(error)
         if (error instanceof Error && error.message.includes("duplicate key value violates unique constraint")) {
-            await getRefreshToken(parsedBody.user)
+            await fetch ("http://localhost:3000/api/refreshToken", {
+                method: "POST",
+                body: JSON.stringify({ user: parsedBody.user })
+            })
             return Response.json({ error: 'User already exists' });
         }
         return Response.json({ error: 'Internal Server Error' });
     }
-}
-
-const getRefreshToken = async (userId: string) => {
-    const cookieStore = cookies()
-    console.log(userId)
-    if(!cookieStore.get("userId")) {
-        return Response.json({ error: 'User not found' });
-    }
-    const refreshToken = cookieStore.get("refreshToken") ?? '';
-    const url = `https://accounts.spotify.com/api/token`
-
-    const payload = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-            grant_type: 'refresh_token',
-            refresh_token: refreshToken.toString() || '',
-            client_id: process.env.SPOTIFY_CLIENT_ID || ''
-        }),
-    }
-    const response = await fetch(url, payload);
-    const data = await response.json();
-    cookieStore.set("authToken", data.access_token, {path: "/"})
-    cookieStore.set("refreshToken", data.refresh_token, {path: "/"})
-    const { rows } = await sql`UPDATE "spotiuser" SET acess_token = ${data.access_token} WHERE user_id = ${userId} RETURNING *`;
-    console.log(rows)
 }
