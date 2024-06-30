@@ -1,11 +1,10 @@
-
 'use client';
 
 import React from 'react'
 import View from './view';
 import { useState } from 'react';
 
-export const Home = () => {
+const Home = () => {
   var [authToken, setAuthToken] = useState('');
   var [userId, setUserId] = useState('');
 
@@ -31,7 +30,7 @@ export const Home = () => {
         <View />
       </>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
