@@ -40,14 +40,14 @@ export async function POST(request: Request) {
     } catch (error) {
         log(error)
         if (error instanceof Error && error.message.includes("duplicate key value violates unique constraint")) {
-            getRefreshToken(parsedBody.user)
+            await getRefreshToken(parsedBody.user)
             return Response.json({ error: 'User already exists' });
         }
         return Response.json({ error: 'Internal Server Error' });
     }
 }
 
-export const getRefreshToken = async (userId: string) => {
+const getRefreshToken = async (userId: string) => {
     const cookieStore = cookies()
     console.log(userId)
     if(!cookieStore.get("userId")) {
