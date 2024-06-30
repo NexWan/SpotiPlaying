@@ -40,7 +40,7 @@ export async function POST(req:NextRequest, res:NextRequest) {
         const parsedBody = requestBody as {user: string, auth: string};
         const user = parsedBody.user;
         const auth = parsedBody.auth;
-        fetch("/api/db", {
+        await fetch("http://localhost:3000/api/db", {
             method: "POST",
             body: JSON.stringify({user: user, auth: auth})
         }).then((response) => {
@@ -50,5 +50,5 @@ export async function POST(req:NextRequest, res:NextRequest) {
             return response.json();
         })
     }
-    return NextResponse.json({message: "You are not logged in!", status: 401})
+    return NextResponse.json({message: "You are not logged in! z", status: 401})
 }

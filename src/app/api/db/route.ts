@@ -1,4 +1,5 @@
 import {sql} from "@vercel/postgres"
+import { log } from "console";
 import { get } from "http";
 import { cookies } from "next/headers";
 
@@ -16,20 +17,29 @@ export async function GET() {
 export async function POST(request: Request) {
     const cookieStore = cookies()
     const requestBody = await request.json();
+    log(requestBody)
     const parsedBody = requestBody as SpotiUser;
     if (!parsedBody.user || !parsedBody.auth) {
         return Response.json({ error: 'Bad Request' });
     }
+    log('paso de aqui')
+
+    cookieStore.set({name: "userId", value: parsedBody.user})
+    cookieStore.set({name: "authToken", value: parsedBody.auth})
+    cookieStore.set({name: "refreshToken", value: ""})
+    log(cookieStore.get("userId"))
 
     try {
-        const { rows } = await sql`INSERT INTO "spotiuser" (user_id, acess_token) VALUES (${parsedBody.user}, ${parsedBody.auth}) RETURNING *`;
-        cookieStore.set("userId", parsedBody.user, {path: "/"})
-        cookieStore.set("authToken", parsedBody.auth, {path: "/"})
-        cookieStore.set("refreshToken", parsedBody.auth, {path: "/"})
+        const { rows } = await sql`INSERT INTO "spotiuser" (user_id, acess_token) VALUES (${requestBody.user}, ${requestBody.auth}) RETURNING *`;
+        log(rows)
+        cookieStore.set({name: "userId", value: parsedBody.user})
+        cookieStore.set({name: "authToken", value: parsedBody.auth})
+        cookieStore.set({name: "refreshToken", value: ""})
+        await getRefreshToken(parsedBody.user) // Now awaiting the result
         return Response.json(rows[0]);
-    } catch (error:any) {
-        console.error(error);
-        if (error.message.includes("duplicate key value violates unique constraint")) {
+    } catch (error) {
+        log(error)
+        if (error instanceof Error && error.message.includes("duplicate key value violates unique constraint")) {
             getRefreshToken(parsedBody.user)
             return Response.json({ error: 'User already exists' });
         }
@@ -39,6 +49,7 @@ export async function POST(request: Request) {
 
 export const getRefreshToken = async (userId: string) => {
     const cookieStore = cookies()
+    console.log(userId)
     if(!cookieStore.get("userId")) {
         return Response.json({ error: 'User not found' });
     }
@@ -60,5 +71,6 @@ export const getRefreshToken = async (userId: string) => {
     const data = await response.json();
     cookieStore.set("authToken", data.access_token, {path: "/"})
     cookieStore.set("refreshToken", data.refresh_token, {path: "/"})
-    const { rows } = await sql`UPDATE "spotiuser SET acess_token = ${data.access_token} WHERE user_id = ${userId} RETURNING *`;
+    const { rows } = await sql`UPDATE "spotiuser" SET acess_token = ${data.access_token} WHERE user_id = ${userId} RETURNING *`;
+    console.log(rows)
 }

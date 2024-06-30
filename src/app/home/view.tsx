@@ -1,7 +1,7 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import styles from "./page.module.css";
-import { getRefreshToken } from "../api/db/route";
 
 interface Player {
   device: {
@@ -111,7 +111,7 @@ interface Player {
   };
 }
 
-function View(token:string) {
+function View() {
   const [userToken, setUserToken] = useState("");
   const [currentSong, setCurrentSong] = useState("");
   const [currentAlbum, setCurrentAlbum] = useState("");
@@ -119,35 +119,66 @@ function View(token:string) {
   const [currentImage, setCurrentImage] = useState("");
   const [bars, setBars] = useState<React.ReactElement[]>([]);
 
-  const validateToken = () => {
-    fetch ("https://api.spotify.com/v1/me/player", {
+  const validateToken = (errors:number) => {
+    fetch("https://api.spotify.com/v1/me/player", {
       headers: {
         Authorization: "Bearer " + token,
       },
-    })
-    .then((response) => {
+    }).then((response) => {
       if (!response.ok) {
-        getRefreshToken(userToken);
-        fetch('/api/getToken',{
-          method: 'GET',
-        }).then((response) => {
-          if (!response.ok) {
-            throw new Error(`API error: ${response.statusText}`);
-          }
-          return response.json();
-        }).then((data) => {
-          setUserToken(data.auth);
+        fetch("http://localhost:3000/api/refreshToken", {
+          method: "POST",
+          body: JSON.stringify({ user: token }),
         })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`API error: ${response.statusText}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            token = data.auth;
+            fetch("http://localhost:3000/api/getToken", {
+              method: "GET",
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error(`API error: ${response.statusText}`);
+                }
+                if(errors > 1) {
+                  throw new Error(`API error: ${response.statusText}`);
+                }
+                validateToken(2);
+                return response.json();
+              })
+              .then((data) => {
+                token = data.auth;
+                console.log(data.auth);
+              });
+          });
       }
       return response.json();
-    })
+    });
   };
 
   const fetchSong = async () => {
-    validateToken();
+    //await validateToken(0);
+    const token = await fetch("http://localhost:3000/api/getToken", {
+      method: "GET",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`API error: ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data.auth);
+        return data.auth;
+      });
     const response = await fetch("https://api.spotify.com/v1/me/player", {
       headers: {
-        Authorization: "Bearer " + userToken,
+        Authorization: "Bearer " + token,
       },
     });
     const data = await response.json();
@@ -155,64 +186,31 @@ function View(token:string) {
     setCurrentAlbum(data.item.album.name);
     setCurrentArtist(data.item.artists[0].name);
     setCurrentImage(data.item.album.images[0].url);
-  }
+  };
 
   useEffect(() => {
-    setUserToken(token); // Update state with the token
-    console.log(token);
-
-    fetch("https://api.spotify.com/v1/me/player", {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Spotify API error: ${response.statusText}`);
-        }
-        return response.json();
-      })
-      .then((data: Player) => {
-        //Update state with the current song
-        setCurrentSong(data.item.name);
-        setCurrentAlbum(data.item.album.name);
-        setCurrentArtist(data.item.artists[0].name);
-        setCurrentImage(data.item.album.images[0].url);
-        console.log(data);
-      });
-      generateBars();
+    fetchSong();
   }, []); // Dependency array is empty, so this effect runs only once
 
-  const generateBars = (): void => {
-    const newBars = Array.from({ length: 20 }, (_, index) => {
-      const height = Math.floor(Math.random() * (10 - 4 + 1)) + 4; // Random height between 4 and 10
-      return (
-        <div
-          key={index}
-          className={`w-2 bg-green-500 h-${height} animate-wave animation-delay-${index * 100}`}
-        ></div>
-      );
-    });
-    setBars([...newBars]);
-
-  };
   return (
     <div className=" text-center w-72 flex flex-col bg-slate-950 p-10 items-center justify-center rounded-2xl shadow-2xl space-y-3">
-      <p className={`h1 ${styles.montserrat} font-montesrrat text-white font-bold text-4xl}`}>
+      <p
+        className={`h1 ${styles.montserrat} font-montesrrat text-white font-bold text-4xl}`}
+      >
         {currentSong}
       </p>
       <img src={currentImage} alt="Album cover" />
       <div className="flex items-end space-x-1 rounded-xl bg-slate-900 p-2">
-      <div className={`${styles.boxContainer}`}>
-        <div className={`${styles.box } ${styles.box1}`}></div>
-        <div className={`${styles.box } ${styles.box2}`}></div>
-        <div className={`${styles.box } ${styles.box3}`}></div>
-        <div className={`${styles.box } ${styles.box4}`}></div>
-        <div className={`${styles.box } ${styles.box5}`}></div>
-        <div className={`${styles.box } ${styles.box6}`}></div>
-        <div className={`${styles.box } ${styles.box7}`}></div>
-        <div className={`${styles.box } ${styles.box8}`}></div>
-      </div>
+        <div className={`${styles.boxContainer}`}>
+          <div className={`${styles.box} ${styles.box1}`}></div>
+          <div className={`${styles.box} ${styles.box2}`}></div>
+          <div className={`${styles.box} ${styles.box3}`}></div>
+          <div className={`${styles.box} ${styles.box4}`}></div>
+          <div className={`${styles.box} ${styles.box5}`}></div>
+          <div className={`${styles.box} ${styles.box6}`}></div>
+          <div className={`${styles.box} ${styles.box7}`}></div>
+          <div className={`${styles.box} ${styles.box8}`}></div>
+        </div>
       </div>
       <h1 className="text-white font-bold">Album</h1>
       <p className="text-white">{currentAlbum}</p>

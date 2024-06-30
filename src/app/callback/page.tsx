@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 
 const Callback = () => {
   const router = useRouter();
-  useEffect(() => {
+  const redirect = async () => {
     var url = new URL(window.location.href);
     var code = url.searchParams.get("code");
     var state = url.searchParams.get("state");
@@ -16,7 +16,7 @@ const Callback = () => {
     var authToken = "";
     var existingUser = false;
 
-    fetch("http://localhost:3000/api", {
+    await fetch("http://localhost:3000/api", {
       method: "GET",
     })
       .then((response) => {
@@ -26,7 +26,7 @@ const Callback = () => {
         console.log(response);
         return response.json();
       })
-      .then((data) => {
+      .then(async (data) => {
         console.log(data);
         if (data.status == 200) {
           existingUser = true;
@@ -35,7 +35,20 @@ const Callback = () => {
         }
 
         if (!existingUser) {
-          fetch(authOptions.url, {
+            var authOptions = {
+                url: "https://accounts.spotify.com/api/token",
+                headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                Authorization:
+                    "Basic " + btoa(client_id + ":" + client_secret),
+                },
+                form: {
+                grant_type: "authorization_code",
+                code: code || "",
+                redirect_uri: "http://localhost:3000/callback",
+                },
+            };
+          await fetch(authOptions.url, {
             method: "POST",
             headers: authOptions.headers,
             body: new URLSearchParams(authOptions.form),
@@ -46,7 +59,7 @@ const Callback = () => {
               }
               return response.json();
             })
-            .then((data) => {
+            .then(async (data) => {
               if (data.error) {
                 throw new Error(
                   `Spotify API error: ${data.error}: ${data.error_description}`
@@ -56,7 +69,7 @@ const Callback = () => {
               console.log("Access Token:", authToken);
               // Redirect with authToken here...
               // fetch the user id
-              fetch("https://api.spotify.com/v1/me", {
+              await fetch("https://api.spotify.com/v1/me", {
                 headers: { Authorization: "Bearer " + authToken },
               })
                 .then((response) => {
@@ -68,9 +81,9 @@ const Callback = () => {
                   }
                   return response.json();
                 })
-                .then((data) => {
+                .then(async (data) => {
                   console.log(data + "entro aca");
-                  fetch("/api/db", {
+                  await fetch("/api/db", {
                     method: "POST",
                     body: JSON.stringify({ user: data.id, auth: authToken }),
                   });
@@ -90,43 +103,18 @@ const Callback = () => {
       .catch((error) => {
         console.error("Error fetching user data:", error);
       });
-
-    if (code == null || state == null) {
-      router.push("/");
-    } else {
-      var authOptions = {
-        url: "https://accounts.spotify.com/api/token",
-        form: {
-          code: code,
-          redirect_uri: "http://localhost:3000/callback",
-          grant_type: "authorization_code",
-        },
-        headers: {
-          "content-type": "application/x-www-form-urlencoded",
-          Authorization:
-            "Basic " +
-            btoa(
-              encodeURIComponent(client_id) +
-                ":" +
-                encodeURIComponent(client_secret)
-            ),
-        },
-        json: true,
-      };
-      console.log(authOptions);
-    }
-  }, []);
+  };
+  redirect();
+  
   return (
-    <div>
-      {
-        // This page will be used to handle the callback from Spotify
-        // The code and state will be in the URL
-        // We will use the code to get the access token
-        // And the state to validate
+      <div>
+        {/* This page will be used to handle the callback from Spotify
+          The code and state will be in the URL
+          We will use the code to get the access token
+          And the state to validate */}
         <p>Redirecting to main page...</p>
-      }
-    </div>
-  );
+      </div>
+    );
 };
 
 export default Callback;
