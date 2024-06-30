@@ -5,7 +5,7 @@ import React from 'react'
 import View from './view';
 import { useState } from 'react';
 
-export const Page = () => {
+export const Home = () => {
   var [authToken, setAuthToken] = useState('');
   var [userId, setUserId] = useState('');
 
@@ -34,4 +34,4 @@ export const Page = () => {
   )
 }
 
-export default Page
+export default Home

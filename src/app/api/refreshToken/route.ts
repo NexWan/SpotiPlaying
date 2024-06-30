@@ -8,10 +8,11 @@ export const POST = async (req: Request) => {
     if(!cookieStore.get("userId")) {
         return Response.json({ error: 'User not found' });
     }
+    const authToken = cookieStore.get("authToken")?.value.toString() || ""
+    cookieStore.set("refreshToken", authToken, {path: "/"})
     const refreshToken = cookieStore.get("refreshToken") ?? '';
     const url = `https://accounts.spotify.com/api/token`
     console.log(refreshToken)
-
     const payload = {
         method: 'POST',
         headers: {
