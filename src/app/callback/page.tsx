@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React from "react";
 
 const Callback = () => {
   const router = useRouter();
@@ -11,8 +11,6 @@ const Callback = () => {
     var state = url.searchParams.get("state");
     var client_id = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID || "";
     var client_secret = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET || "";
-    console.log(code);
-    console.log(state);
     var authToken = "";
     var existingUser = false;
 
