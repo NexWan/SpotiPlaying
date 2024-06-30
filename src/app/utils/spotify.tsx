@@ -54,6 +54,7 @@ export const validateToken = async () => {
           Authorization: "Bearer " + token,
         },
       });
+      console.log("Token in validateToken:", token); // Log the token for debugging
       if (!response.ok) {
         await fetch("http://localhost:3000/api/refreshToken", {
           method: "POST",

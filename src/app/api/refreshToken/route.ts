@@ -2,33 +2,37 @@ import {cookies} from 'next/headers';
 import {sql} from '@vercel/postgres';
 
 export const POST = async (req: Request) => {
-    const body = await req.json();
-    const userId = body.user;
     const cookieStore = cookies()
+    const userId = cookieStore.get("userId")?.value.toString() || ""
     if(!cookieStore.get("userId")) {
         return Response.json({ error: 'User not found' });
     }
-    const authToken = cookieStore.get("authToken")?.value.toString() || ""
-    cookieStore.set("refreshToken", authToken, {path: "/"})
-    const refreshToken = cookieStore.get("refreshToken") ?? '';
+    const refreshToken = cookieStore.get("refreshToken")?.value.toString() ?? '';
     const url = `https://accounts.spotify.com/api/token`
     console.log(refreshToken)
-    const payload = {
-        method: 'POST',
+    const client = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID
+    console.log("Client id: ", client)
+    var authOptions = {
+        url: url,
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': 'Basic ' + btoa(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET)
+            "Content-Type": "application/x-www-form-urlencoded",
+            Authorization: "Basic " + btoa(client + ":" + process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET),
         },
-        body: new URLSearchParams({
-            grant_type: 'refresh_token',
-            refresh_token: refreshToken.toString() || '',
-            client_id: process.env.SPOTIFY_CLIENT_ID || ''
-        }),
-    }
-    const response = await fetch(url, payload);
+        form: { 
+            grant_type: "refresh_token",
+            refresh_token: refreshToken,
+        },
+        json: true,
+    };
+    const response = await fetch(authOptions.url, {
+        method: "POST",
+        headers: authOptions.headers,
+        body: new URLSearchParams(authOptions.form),
+    });
     const data = await response.json();
+    console.log(data)
     cookieStore.set("authToken", data.access_token, {path: "/"})
     cookieStore.set("refreshToken", data.refresh_token, {path: "/"})
-    const { rows } = await sql`UPDATE "spotiuser" SET acess_token = ${data.access_token} WHERE user_id = ${userId} RETURNING *`;
+    const { rows } = await sql`UPDATE "spotiuser" SET access_token = ${data.access_token}, refresh_token = ${data.refresh_token} WHERE user_id = ${userId} RETURNING *`;
     return Response.json({ auth: data.access_token });
 }

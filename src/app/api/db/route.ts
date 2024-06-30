@@ -1,11 +1,7 @@
 import {sql} from "@vercel/postgres"
 import { log } from "console";
 import { cookies } from "next/headers";
-
-interface SpotiUser {
-    user: string;
-    auth: string;
-}
+import { SpotiUser } from "@/app/utils/interfaces";
 
 export async function GET() {
     const {rows} = await sql`SELECT * FROM spotiuser`
@@ -21,18 +17,17 @@ export async function POST(request: Request) {
         return Response.json({ error: 'Bad Request' });
     }
     log('paso de aqui')
-
     cookieStore.set({name: "userId", value: parsedBody.user})
     cookieStore.set({name: "authToken", value: parsedBody.auth})
-    cookieStore.set({name: "refreshToken", value: ""})
+    cookieStore.set({name: "refreshToken", value: parsedBody.refresh})
     log(cookieStore.get("userId"))
 
     try {
-        const { rows } = await sql`INSERT INTO "spotiuser" (user_id, acess_token) VALUES (${requestBody.user}, ${requestBody.auth}) RETURNING *`;
+        const { rows } = await sql`INSERT INTO "spotiuser" (user_id, access_token, refresh_token) VALUES (${requestBody.user}, ${requestBody.auth}, ${requestBody.refresh}) RETURNING *`;
         log(rows)
         cookieStore.set({name: "userId", value: parsedBody.user})
         cookieStore.set({name: "authToken", value: parsedBody.auth})
-        cookieStore.set({name: "refreshToken", value: ""})
+        cookieStore.set({name: "refreshToken", value: parsedBody.refresh})
         return Response.json(rows[0]);
     } catch (error) {
         log(error)
