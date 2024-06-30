@@ -16,7 +16,7 @@ const Callback = () => {
     var authToken = "";
     var existingUser = false;
 
-    await fetch("http://localhost:3000/api", {
+    await fetch("https://spoti-playing-git-dev-nexwans-projects.vercel.app/api", {
       method: "GET",
     })
       .then((response) => {
@@ -45,7 +45,7 @@ const Callback = () => {
                 form: {
                 grant_type: "authorization_code",
                 code: code || "",
-                redirect_uri: "http://localhost:3000/callback",
+                redirect_uri: "https://spoti-playing-git-dev-nexwans-projects.vercel.app/callback",
                 },
             };
           await fetch(authOptions.url, {

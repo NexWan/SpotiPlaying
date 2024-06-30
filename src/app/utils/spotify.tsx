@@ -26,7 +26,7 @@ export const getUserProfile = async (token: string) => {
 export const validateToken = async () => {
   var token = ""
   var tokenIsValid = false;
-   await fetch("http://localhost:3000/api/getToken", {
+   await fetch("https://spoti-playing-git-dev-nexwans-projects.vercel.app/api/getToken", {
     method: "GET",
   })
     .then((response) => {
@@ -44,7 +44,7 @@ export const validateToken = async () => {
         },
       });
       if (!response.ok) {
-        await fetch("http://localhost:3000/api/refreshToken", {
+        await fetch("https://spoti-playing-git-dev-nexwans-projects.vercel.app/api/refreshToken", {
           method: "POST",
           body: JSON.stringify({ user: token }),
         })

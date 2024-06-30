@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     } catch (error) {
         log(error)
         if (error instanceof Error && error.message.includes("duplicate key value violates unique constraint")) {
-            await fetch ("http://localhost:3000/api/refreshToken", {
+            await fetch ("https://spoti-playing-git-dev-nexwans-projects.vercel.app/api/refreshToken", {
                 method: "POST",
                 body: JSON.stringify({ user: parsedBody.user })
             })

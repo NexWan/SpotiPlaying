@@ -8,7 +8,7 @@ const Home = () => {
   var [authToken, setAuthToken] = useState('');
   var [userId, setUserId] = useState('');
 
-  fetch('http://localhost:3000/api/getToken',{
+  fetch('https://spoti-playing-git-dev-nexwans-projects.vercel.app/api/getToken',{
     method: 'GET',
   }).then((response) => {
     if (!response.ok) {

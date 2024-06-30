@@ -29,7 +29,7 @@ export async function POST(req:NextRequest, res:NextRequest) {
         if(auth) {
             const userId = cookieStore.get("userId");
             if (userId) {
-                await fetch("http://localhost:3000/api/db", {
+                await fetch("https://spoti-playing-git-dev-nexwans-projects.vercel.app/api/db", {
                     method: "POST",
                     body: JSON.stringify({user: userId, auth: auth})
                 }).then((response) => {
@@ -48,7 +48,7 @@ export async function POST(req:NextRequest, res:NextRequest) {
         const parsedBody = requestBody as {user: string, auth: string};
         const user = parsedBody.user;
         const auth = parsedBody.auth;
-        await fetch("http://localhost:3000/api/db", {
+        await fetch("https://spoti-playing-git-dev-nexwans-projects.vercel.app/api/db", {
             method: "POST",
             body: JSON.stringify({user: user, auth: auth})
         }).then((response) => {
