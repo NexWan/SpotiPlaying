@@ -38,7 +38,7 @@ export const getUserProfile = async (token: string) => {
 
 export const validateToken = async () => {
   var token = ""
-  await fetch("http://localhost:3000/api/getToken", {
+  await fetch("https://spoti-playing-git-deploy-testing-nexwans-projects.vercel.app/api/getToken", {
     method: "GET",
   })
     .then((response) => {
@@ -56,7 +56,7 @@ export const validateToken = async () => {
       });
       if (!response.ok) {
         console.log("entro a !response.ok")
-        await fetch("http://localhost:3000/api/refreshToken", {
+        await fetch("https://spoti-playing-git-deploy-testing-nexwans-projects.vercel.app/api/refreshToken", {
           method: "GET",
         })
           .then((response) => {
@@ -76,7 +76,7 @@ export const validateToken = async () => {
 };
 
 export const getTokenByUserId = async (userId: string) => {
-  const token = await fetch("http://localhost:3000/api/db/getTokenById", {
+  const token = await fetch("https://spoti-playing-git-deploy-testing-nexwans-projects.vercel.app/api/db/getTokenById", {
     method: "POST",
     body: JSON.stringify({ user: userId }),
   })
@@ -100,7 +100,7 @@ export const validateTokenView = async (auth:string, refresh:string) => {
     },
   }).then(async (response) => {
     if (!response.ok) {
-      await fetch("http://localhost:3000/api/refreshToken", {
+      await fetch("https://spoti-playing-git-deploy-testing-nexwans-projects.vercel.app/api/refreshToken", {
         method: "POST",
         body: JSON.stringify({auth: auth, refresh: refresh }),
       })

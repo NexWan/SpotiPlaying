@@ -40,7 +40,7 @@ const Home = () => {
           <View />
         </>
         <p>You can access the link of the embed through this link:</p>
-        <a href={`http://localhost:3000/view?userId=${userId}`} className='underline underline-offset-2'>http://localhost:3000/view?userId={userId}</a>
+        <a href={`https://spoti-playing-git-deploy-testing-nexwans-projects.vercel.app/view?userId=${userId}`} className='underline underline-offset-2'>https://spoti-playing-git-deploy-testing-nexwans-projects.vercel.app/view?userId={userId}</a>
       </div>
     </div>
   );

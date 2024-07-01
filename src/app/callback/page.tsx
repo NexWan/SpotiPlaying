@@ -50,7 +50,7 @@ const Callback = () => {
             form: {
               grant_type: "authorization_code",
               code: code || "",
-              redirect_uri: "http://localhost:3000/callback",
+              redirect_uri: "https://spoti-playing-git-deploy-testing-nexwans-projects.vercel.app/callback",
             },
           };
           await fetch(authOptions.url, {
@@ -89,7 +89,7 @@ const Callback = () => {
                 })
                 .then(async (data) => {
                   console.log(data + "entro aca");
-                  await fetch("http://localhost:3000/api/db", {
+                  await fetch("https://spoti-playing-git-deploy-testing-nexwans-projects.vercel.app/api/db", {
                     method: "POST",
                     body: JSON.stringify({ user: data.id, auth: authToken, refresh: refreshToken}),
                   });
