@@ -21,7 +21,6 @@ export async function POST(request: Request) {
     cookieStore.set({name: "authToken", value: parsedBody.auth})
     cookieStore.set({name: "refreshToken", value: parsedBody.refresh})
     log(cookieStore.get("userId"))
-
     try {
         const { rows } = await sql`INSERT INTO "spotiuser" (user_id, access_token, refresh_token) VALUES (${requestBody.user}, ${requestBody.auth}, ${requestBody.refresh}) RETURNING *`;
         log(rows)

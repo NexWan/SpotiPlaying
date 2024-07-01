@@ -1,12 +1,17 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 const Callback = () => {
   const router = useRouter();
+  const hasRedirected = useRef(false);
+
   useEffect(() => {
-    redirect();
+    if (!hasRedirected.current) {
+      redirect();
+      hasRedirected.current = true;
+    }
   }, []);
   const redirect = async () => {
     var url = new URL(window.location.href);
@@ -35,7 +40,6 @@ const Callback = () => {
         } else {
           existingUser = false;
         }
-
         if (!existingUser) {
           var authOptions = {
             url: "https://accounts.spotify.com/api/token",
@@ -85,7 +89,7 @@ const Callback = () => {
                 })
                 .then(async (data) => {
                   console.log(data + "entro aca");
-                  await fetch("/api/db", {
+                  await fetch("http://localhost:3000/api/db", {
                     method: "POST",
                     body: JSON.stringify({ user: data.id, auth: authToken, refresh: refreshToken}),
                   });

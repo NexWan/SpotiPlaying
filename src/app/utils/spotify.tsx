@@ -1,4 +1,5 @@
 import { Player } from "./interfaces";
+import {sql} from "@vercel/postgres"
 
 export const getUserProfile = async (token: string) => {
   var isPlaying = false;
@@ -38,7 +39,7 @@ export const getUserProfile = async (token: string) => {
 export const validateToken = async () => {
   var token = ""
   var tokenIsValid = false;
-   await fetch("http://localhost:3000/api/getToken", {
+  await fetch("http://localhost:3000/api/getToken", {
     method: "GET",
   })
     .then((response) => {
@@ -58,7 +59,6 @@ export const validateToken = async () => {
       if (!response.ok) {
         await fetch("http://localhost:3000/api/refreshToken", {
           method: "POST",
-          body: JSON.stringify({ user: token }),
         })
           .then((response) => {
             if (!response.ok) {
@@ -75,3 +75,20 @@ export const validateToken = async () => {
     });
   return token;
 };
+
+export const getTokenByUserId = async (userId: string) => {
+  const token = await fetch("http://localhost:3000/api/db/getTokenById", {
+    method: "POST",
+    body: JSON.stringify({ user: userId }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`API error: ${response.statusText}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      return data.message;
+    });
+  return token;
+}
