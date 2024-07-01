@@ -106,3 +106,9 @@ export interface Player {
     };
   }
   
+
+export interface SpotiUser {
+    user: string;
+    auth: string;
+    refresh: string;
+}
