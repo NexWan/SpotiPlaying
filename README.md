@@ -5,19 +5,24 @@ I'm creating this app using:
 - ReactJS
 - NextJS
 - Spotify API
+- Vercel
+- Postgresql Serverless (from vercel)
 
 ## What's already done?
 - Connecting the api with the app
 - Deploying the user playing information
 - Design of the now playing (still missing some stuff and might change)
+- Refresh token is working
+- Recently played songs now are working
+- Connection between the database and cookies are probably working (not fully tested yet)
 ### Image of how it looks at the moment
 <img src='./gitImgs/preview.png'>
 
 ## What's missing?
-- The main problem right now it's how to obfuscate the user auth token, since I don't want to expose it on the url I'm trying to figure out a relationship between userid and auth token using vercel databases. Might end up changing the provider depending on if I figure out something.  
+- ~~The main problem right now it's how to obfuscate the user auth token, since I don't want to expose it on the url I'm trying to figure out a relationship between userid and auth token using vercel databases. Might end up changing the provider depending on if I figure out something. ~~ 
 - Personalization of the card
 - Converting HTML to IMG, I'm still searching for a library to do this!
-- Figuring out how to refresh the token since right now I think it dies at 1 hour and you'll need to re-login to acess the embed.
+- ~~Figuring out how to refresh the token since right now I think it dies at 1 hour and you'll need to re-login to acess the embed.~~
 
 ## Run on local
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).

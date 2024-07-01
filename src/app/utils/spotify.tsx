@@ -1,67 +1,66 @@
 import { Player, LastPlayed } from "./interfaces";
-import {sql} from "@vercel/postgres"
+import { sql } from "@vercel/postgres";
 
 export const getUserProfile = async (token: string) => {
   var isPlaying = false;
   console.log("Fetching user profile with token:", token); // Log the token for debugging
+  var res = { name: "", album: "", artist: "", image: "", playing: false };
   try {
-    const response = await fetch("https://api.spotify.com/v1/me/player", { // Changed endpoint to /me
+    const response = await fetch("https://api.spotify.com/v1/me/player", {
+      // Changed endpoint to /me
       headers: {
         Authorization: "Bearer " + token,
       },
     });
-
-    if (!response.ok) {
-      console.error("Error in getUserProfile:", response.statusText);
-      throw new Error(`Spotify API error: ${response.statusText}`);
-    }
-
-    const data:Player = await response.json();
-    console.log("Data in getUserProfile:", data); // Log the raw data for debugging
-
-    if(data.is_playing){
-      isPlaying = true;
-    }else{
-      fetch("https://api.spotify.com/v1/me/player/recently-played", {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      })
+    var data: Player;
+    try {
+      data = await response.json();
+      console.log("Data in getUserProfile:", data); // Log the raw data for debugging
+      if (data.is_playing) {
+        isPlaying = true;
+      }
+      res = {
+        name: data.item.name,
+        album: data.item.album.name,
+        artist: data.item.artists[0].name,
+        image: data.item.album.images[0].url,
+        playing: isPlaying,
+      };
+    } catch (e) {
+      res = await fetch(
+        "https://api.spotify.com/v1/me/player/recently-played?limit=1",
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
         .then((response) => {
           if (!response.ok) {
-            throw new Error(`API error: ${response.statusText}`);
+            console.log("Error in getUserProfile: wowow2", response.statusText);
           }
           return response.json();
         })
-        .then((data:LastPlayed) => {
-          const ret = data.items[0].track;;
-          console.log(ret);
+        .then((data: LastPlayed) => {
+          const ret = data.items[0].track;
           return {
             name: ret.name,
             album: ret.album.name,
             artist: ret.artists[0].name,
             image: ret.album.images[0].url,
-            playing: isPlaying
-          }
-        }
-      )
+            playing: isPlaying,
+          };
+        });
     }
-
-    return {
-      name: data.item.name,
-      album: data.item.album.name,
-      artist: data.item.artists[0].name,
-      image: data.item.album.images[0].url,
-      playing: isPlaying
-    };
   } catch (error) {
     console.error("Error fetching user profile:", error);
-    throw error; // Rethrow the error to be handled by the caller
   }
+  console.log(res);
+  return res;
 };
 
 export const validateToken = async () => {
-  var token = ""
+  var token = "";
   await fetch("http://localhost:3000/api/getToken", {
     method: "GET",
   })
@@ -79,7 +78,7 @@ export const validateToken = async () => {
         },
       });
       if (!response.ok) {
-        console.log("entro a !response.ok")
+        console.log("entro a !response.ok");
         await fetch("http://localhost:3000/api/refreshToken", {
           method: "GET",
         })
@@ -114,10 +113,10 @@ export const getTokenByUserId = async (userId: string) => {
       return data;
     });
   return token;
-}
+};
 
-export const validateTokenView = async (auth:string, refresh:string) => {
-  var token = ""
+export const validateTokenView = async (auth: string, refresh: string) => {
+  var token = "";
   await fetch("https://api.spotify.com/v1/me", {
     headers: {
       Authorization: "Bearer " + auth,
@@ -126,7 +125,7 @@ export const validateTokenView = async (auth:string, refresh:string) => {
     if (!response.ok) {
       await fetch("http://localhost:3000/api/refreshToken", {
         method: "POST",
-        body: JSON.stringify({auth: auth, refresh: refresh }),
+        body: JSON.stringify({ auth: auth, refresh: refresh }),
       })
         .then((response) => {
           if (!response.ok) {
@@ -138,9 +137,9 @@ export const validateTokenView = async (auth:string, refresh:string) => {
           console.log(data);
           token = data.auth;
         });
-    }else {
+    } else {
       token = auth;
     }
   });
   return token;
-}
+};
