@@ -1,4 +1,4 @@
-import { Player } from "./interfaces";
+import { Player, LastPlayed } from "./interfaces";
 import {sql} from "@vercel/postgres"
 
 export const getUserProfile = async (token: string) => {
@@ -21,6 +21,30 @@ export const getUserProfile = async (token: string) => {
 
     if(data.is_playing){
       isPlaying = true;
+    }else{
+      fetch("https://api.spotify.com/v1/me/player/recently-played", {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`API error: ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then((data:LastPlayed) => {
+          const ret = data.items[0].track;;
+          console.log(ret);
+          return {
+            name: ret.name,
+            album: ret.album.name,
+            artist: ret.artists[0].name,
+            image: ret.album.images[0].url,
+            playing: isPlaying
+          }
+        }
+      )
     }
 
     return {

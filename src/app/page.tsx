@@ -8,7 +8,7 @@ export default function Home() {
   var client_id:string = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID || "";
   var redirect_uri = "http://localhost:3000/callback";
   var state = Math.random().toString(36).substring(7);
-  var scope = "user-read-private user-read-email user-read-playback-state user-modify-playback-state user-read-currently-playing";
+  var scope = "user-read-playback-state user-modify-playback-state user-read-currently-playing user-read-recently-played user-top-read user-read-playback-position";
 
   var url = "https://accounts.spotify.com/authorize";
 
