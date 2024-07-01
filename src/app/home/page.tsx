@@ -22,7 +22,7 @@ const Home = () => {
   })
   console.log(userId + " " + authToken)
   return (
-    <div>
+    <div className='max-w-2xl flex flex-col mx-auto justify-center items-center'>
       <h1>Welcome to the home page</h1>
       <p>User ID: {userId}</p>
       <p>Auth Token: {authToken}</p>

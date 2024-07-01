@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { getTokenByUserId } from '../utils/spotify';
+import { getTokenByUserId, validateTokenView } from '../utils/spotify';
 import View from '../home/view';
 
 const PageView = () => {
@@ -12,9 +12,11 @@ const PageView = () => {
             var url = new URL(window.location.href);
             var userId = url.searchParams.get("userId") || '';
             console.log(userId);
-            const fetchedToken = await getTokenByUserId(userId);
-            setToken(fetchedToken);
-            console.log(fetchedToken); // Log the fetched token instead of the state variable
+            var data = await getTokenByUserId(userId);
+            var fetchedToken = data.auth;
+            var fetchedRefresh = data.refresh;
+            var token = await validateTokenView(fetchedToken, fetchedRefresh);
+            setToken(token);
         };
         fetchData();
     }, []); // Removed token from dependency array

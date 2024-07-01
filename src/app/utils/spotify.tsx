@@ -87,7 +87,36 @@ export const getTokenByUserId = async (userId: string) => {
       return response.json();
     })
     .then((data) => {
-      return data.message;
+      return data;
     });
+  return token;
+}
+
+export const validateTokenView = async (auth:string, refresh:string) => {
+  var token = ""
+  await fetch("https://api.spotify.com/v1/me", {
+    headers: {
+      Authorization: "Bearer " + auth,
+    },
+  }).then(async (response) => {
+    if (!response.ok) {
+      await fetch("http://localhost:3000/api/refreshToken", {
+        method: "POST",
+        body: JSON.stringify({auth: auth, refresh: refresh }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`API error: ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          token = data.auth;
+        });
+    }else {
+      token = auth;
+    }
+  });
   return token;
 }
