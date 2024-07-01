@@ -3,8 +3,9 @@
 import React, { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import { getUserProfile, validateToken } from "../utils/spotify";
+import Image from "next/image";
 
-function View({pasedToken}: {pasedToken?: string}) {
+function View({ pasedToken }: { pasedToken?: string }) {
   const [currentSong, setCurrentSong] = useState("");
   const [currentAlbum, setCurrentAlbum] = useState("");
   const [currentArtist, setCurrentArtist] = useState("");
@@ -13,7 +14,7 @@ function View({pasedToken}: {pasedToken?: string}) {
 
   const fetchSong = async () => {
     console.log("Token in View:", pasedToken); // Log the token for debugging
-    const token = pasedToken !== undefined ? pasedToken : await validateToken();    
+    const token = pasedToken !== undefined ? pasedToken : await validateToken();
     const userData = await getUserProfile(token);
     setCurrentSong(userData.name);
     setCurrentAlbum(userData.album);
@@ -28,16 +29,24 @@ function View({pasedToken}: {pasedToken?: string}) {
 
   return (
     <div className=" text-center w-72 flex flex-col bg-slate-950 p-10 items-center justify-center rounded-2xl shadow-2xl space-y-3">
-      <p className="font-monesrrat text-white font-bold">
-        {isPlaying ? "Playing" : "Not playing"}
-      </p>
+      <div className="flex flex-row justify-evenly items-center w-full left-100">
+        <p className="font-monesrrat text-white font-bold ">
+          {isPlaying ? "Playing" : "Not playing"}
+        </p>
+      </div>
       <p
         className={`h1 ${styles.montserrat} font-montesrrat text-white font-bold text-4xl}`}
       >
         {currentSong}
       </p>
       <img src={currentImage} alt="Album cover" />
-      <div className="flex items-end space-x-1 rounded-xl bg-slate-900 p-2">
+      <div className="flex items-end space-x-1 rounded-xl p-2 justify-center items-center">
+      <Image
+            src="/assets/spotify.png"
+            alt="Spotify logo"
+            width={50}
+            height={50}
+          />
         <div className={styles.boxContainer}>
           {Array.from({ length: 8 }, (_, i) => (
             <div
