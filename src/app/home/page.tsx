@@ -33,14 +33,15 @@ const Home = () => {
         <div className='w-1/3'>
         </div>
       </header>
-      <div className=' max-w-4xl flex flex-col mx-auto justify-center items-center bg-white p-12'>
-        <h1>Welcome to the home page</h1>
+      <div className=' max-w-4xl flex flex-col mx-auto justify-center items-center bg-white p-4'>
+        <h1>Welcome to  SpotiPlaying!</h1>
         <p>Here you can see the preview of your spotify card!</p>
         <>
           <View />
         </>
-        <p>You can access the link of the embed through this link:</p>
+        <p className='my-5'>You can access the link of the embed through this link:</p>
         <a href={`http://localhost:3000/view?userId=${userId}`} className='underline underline-offset-2'>http://localhost:3000/view?userId={userId}</a>
+        <p className=' text-red-400'>Found any bug? Create an issue on the <a className='underline' href='https://github.com/NexWan/SpotiPlaying/issues'>GitHub repo</a></p>
       </div>
     </div>
   );
