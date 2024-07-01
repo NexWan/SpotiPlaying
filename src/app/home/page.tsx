@@ -22,7 +22,7 @@ const Home = () => {
   })
   console.log(userId + " " + authToken)
   return (
-    <div className=" w-screen bg-white">
+    <div className="h-fit w-screen bg-white">
       <header className='bg-gray-800 text-white text-center p-4 flex justify-center items-center mx-auto'>
         <div className='w-1/3'>
         <h1>Developed by: <a href='https://github.com/NexWan' className=' underline underline-offset-2'>NexWan</a></h1>

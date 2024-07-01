@@ -28,7 +28,7 @@ function View({ pasedToken }: { pasedToken?: string }) {
   }, []); // Dependency array is empty, so this effect runs only once
 
   return (
-    <div className=" text-center w-72 flex flex-col bg-slate-950 p-10 items-center justify-center rounded-2xl shadow-2xl space-y-3">
+    <div className=" text-center w-72 flex flex-col bg-slate-950 p-10 items-center justify-center rounded-2xl shadow-2xl space-y-3 min-h-96">
       <div className="flex flex-row justify-evenly items-center w-full left-100">
         <p className="font-monesrrat text-white font-bold ">
           {isPlaying ? "Playing" : "Not playing"}
