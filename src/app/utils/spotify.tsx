@@ -38,7 +38,6 @@ export const getUserProfile = async (token: string) => {
 
 export const validateToken = async () => {
   var token = ""
-  var tokenIsValid = false;
   await fetch("http://localhost:3000/api/getToken", {
     method: "GET",
   })
@@ -55,10 +54,10 @@ export const validateToken = async () => {
           Authorization: "Bearer " + token,
         },
       });
-      console.log("Token in validateToken:", token); // Log the token for debugging
       if (!response.ok) {
+        console.log("entro a !response.ok")
         await fetch("http://localhost:3000/api/refreshToken", {
-          method: "POST",
+          method: "GET",
         })
           .then((response) => {
             if (!response.ok) {
@@ -68,7 +67,7 @@ export const validateToken = async () => {
           })
           .then((data) => {
             token = data.auth;
-            console.log(data.auth);
+            console.log("ola!" + data.auth);
           });
       }
       return data.auth;
