@@ -16,10 +16,18 @@ I'm creating this app using:
 - Recently played songs now are working
 - Connection between the database and cookies are probably working (not fully tested yet)
 ### Image of how it looks at the moment
-<img src='./gitImgs/preview.png'>
+<img src='./gitImgs/preview.png'>  
+
+## Main page (at the moment)
+<img src='./gitImgs/preview2.png'>
+
+## Preview of the embeded card
+<img src='./gitImgs/preview3.png'>   
+
+As you can see it uses url?userId=.... in order to fetch the user last played instead of exposing your auth token!
 
 ## What's missing?
-- ~~The main problem right now it's how to obfuscate the user auth token, since I don't want to expose it on the url I'm trying to figure out a relationship between userid and auth token using vercel databases. Might end up changing the provider depending on if I figure out something. ~~ 
+- ~~The main problem right now it's how to obfuscate the user auth token, since I don't want to expose it on the url I'm trying to figure out a relationship between userid and auth token using vercel databases. Might end up changing the provider depending on if I figure out something.~~ 
 - Personalization of the card
 - Converting HTML to IMG, I'm still searching for a library to do this!
 - ~~Figuring out how to refresh the token since right now I think it dies at 1 hour and you'll need to re-login to acess the embed.~~
