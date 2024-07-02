@@ -40,7 +40,7 @@ function View({ pasedToken }: { pasedToken?: string }) {
         {currentSong}
       </p>
       <img src={currentImage} alt="Album cover" />
-      <div className="flex items-end space-x-1 rounded-xl p-2 justify-center items-center">
+      <div className="flex  space-x-1 rounded-xl p-2 justify-center items-center">
       <Image
             src="/assets/spotify.png"
             alt="Spotify logo"
