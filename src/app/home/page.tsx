@@ -39,7 +39,7 @@ const Home = () => {
           <img src="https://spoti-playing.vercel.app/api/svg?userId=31yzahwadeqrj7t3znaogbz63vjm" alt="" />
         </div>
         <p className='my-5'>You can access the link of the embed through this link:</p>
-        <a href={`https://spoti-playing.vercel.app/api/svg?userId=${userId}`} className='underline underline-offset-2'>https://spoti-playing.vercel.app/view?userId={userId}</a>
+        <a href={`https://spoti-playing.vercel.app/api/svg?userId=${userId}`} className='underline underline-offset-2'>https://spoti-playing.vercel.app/api/svg?userId={userId}</a>
         <p className=' text-red-400'>Found any bug? Create an issue on the <a className='underline' href='https://github.com/NexWan/SpotiPlaying/issues'>GitHub repo</a></p>
       </div>
       
