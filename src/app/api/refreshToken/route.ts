@@ -32,7 +32,7 @@ export const GET = async () => {
     });
     const data = await response.json();
     console.log(data)
-    cookieStore.set("authToken", data.access_token, {path: "/"})
+    cookieStore.set("authToken", data.access_token, {path: "/", expires: (Date.now() + ((10 * 365 * 24 * 60 * 60)))})
     const { rows } = await sql`UPDATE "spotiuser" SET access_token = ${data.access_token} WHERE user_id = ${userId} RETURNING *`;
     return Response.json({ auth: data.access_token });
 }

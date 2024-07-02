@@ -17,9 +17,11 @@ export async function POST(request: Request) {
         return Response.json({ error: 'Bad Request' });
     }
     log('paso de aqui')
-    cookieStore.set({name: "userId", value: parsedBody.user})
-    cookieStore.set({name: "authToken", value: parsedBody.auth})
-    cookieStore.set({name: "refreshToken", value: parsedBody.refresh})
+    const fiveYearsFromNow = new Date();
+    fiveYearsFromNow.setFullYear(fiveYearsFromNow.getFullYear() + 5);
+    cookieStore.set({name: "userId", value: parsedBody.user, expires: fiveYearsFromNow})
+    cookieStore.set({name: "authToken", value: parsedBody.auth, expires: fiveYearsFromNow})
+    cookieStore.set({name: "refreshToken", value: parsedBody.refresh, expires: fiveYearsFromNow})
     log(cookieStore.get("userId"))
     try {
         const { rows } = await sql`INSERT INTO "spotiuser" (user_id, access_token, refresh_token) VALUES (${requestBody.user}, ${requestBody.auth}, ${requestBody.refresh}) RETURNING *`;
