@@ -38,7 +38,7 @@ export async function GET(req:Request, res:Response) {
 
   const genSvg = (songName:String, artistName:String, albumArt:string, playing:Boolean, albumName:String, spotiImage:String) => {
     return `
-    <svg viewBox="0 0 400 800" width="400px" height="800px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <svg viewBox="0 0 400 600" width="400px" height="600px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml">
       <foreignObject x="0" y="0" width="400px" height="800px">
         <style>
           @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&amp;display=swap');
