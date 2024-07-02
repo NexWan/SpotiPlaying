@@ -35,39 +35,34 @@ As you can see it uses url?userId=.... in order to fetch the user last played in
 - ~~Figuring out how to refresh the token since right now I think it dies at 1 hour and you'll need to re-login to acess the embed.~~
 
 ## Run on local
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This app runs on ReactJS and uses NextJS as it's backend, so you'll need to:
+- Fork the project
+- Create a vercel project based on the fork
+- Create a serverless postgresql database on vercel
+- Create a spotify developer account  
 
-## Getting Started
+You can see the steps a bit more detailed down belos.
 
-First, run the development server:
+## Creating a vercel project.
+You'll need to create your acount at [vercel](https://vercel.com) and select deploy a project, there you'll select the fork.  
+Once you have deployed it then you'll need to create the postgresql database.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Creating the database
+It's pretty simple following [vercel documentation](https://vercel.com/docs/storage), once you have setup your database this is the only table it uses:
+```sql
+CREATE TABLE spotiuser (
+        "user_id" VARCHAR(255) NOT NULL,
+        "access_token" VARCHAR(255) NOT NULL,
+        "refresh_token" VARChAR (255) NOT NULL,
+        CONSTRAINT pk_userid PRIMARY KEY("user_id") 
+)
 ```
+Then follow the steps that vercel gives you to link the project from your console to the database on vercel, make sure you import from vercel the enviroment variables, which speaking of you'll need 2 env variables:  
+```js
+NEXT_PUBLIC_SPOTIFY_CLIENT_ID: 'your_spotify_client_id'
+NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET: 'your_spotify_client_secret'
+```
+Make sure you import your variables to the project too.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Spotify developer
+Just go into [Spotify developer page](https://developer.spotify.com/) and create your account, then you'll need to create a new project, make sure to follow the steps of spotify documentation to setup your callback and select WEB API and WEB API SDK.
