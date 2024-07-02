@@ -36,7 +36,7 @@ const Home = () => {
         <h1>Welcome to  SpotiPlaying!</h1>
         <p>Here you can see the preview of your spotify card!</p>
         <div>
-          <img src="http://localhost:3000/api/svg?userId=31yzahwadeqrj7t3znaogbz63vjm" alt="" />
+          <img src="https://spoti-playing.vercel.app/api/svg?userId=31yzahwadeqrj7t3znaogbz63vjm" alt="" />
         </div>
         <p className='my-5'>You can access the link of the embed through this link:</p>
         <a href={`https://spoti-playing.vercel.app/api/svg?userId=${userId}`} className='underline underline-offset-2'>https://spoti-playing.vercel.app/view?userId={userId}</a>

@@ -16,7 +16,7 @@ export async function GET(req:Request, res:Response) {
     const playing = userData.playing;
     const album = userData.album;
     image = `data:image/jpeg;base64,${await imgToBase64(image)}`
-    const spotiImage = `data:image/jpeg;base64,${await imgToBase64('http://localhost:3000/assets/spotify.png')}`
+    const spotiImage = `data:image/jpeg;base64,${await imgToBase64('https://spoti-playing.vercel.app/assets/spotify.png')}`
     const svgContent = genSvg(name, artist, image, playing, album, spotiImage);
   
     // Send SVG content
