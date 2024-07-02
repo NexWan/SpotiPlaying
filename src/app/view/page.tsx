@@ -44,13 +44,8 @@ const PageView = () => {
     return (
         <>
             {token &&  
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox={viewBox} style={{ width: '288px', height: 'fit-content' }}>
-                <foreignObject x="0" y="0" width="100%" height="100%">
-                    <div ref={contentRef} className=' w-fit h-fit'> {/* Attach ref to the dynamic content */}
-                        <View pasedToken={token} />
-                    </div>
-                </foreignObject>
-            </svg>}
+            <img src='http://localhost:3000/api/svg?userId=31yzahwadeqrj7t3znaogbz63vjm' alt='Spotify SVG'/>
+            }
         </>
     );
 };

@@ -44,7 +44,7 @@ const Home = () => {
         <p className=' text-red-400'>Found any bug? Create an issue on the <a className='underline' href='https://github.com/NexWan/SpotiPlaying/issues'>GitHub repo</a></p>
       </div>
       <div>
-        <iframe src={`http://localhost:3000/view?userId=${userId}`} style={{width:'100%', height:'100%'}}  title='Spotify Card' allow="encrypted-media"></iframe>
+        <img src="http://localhost:3000/api/svg?userId=31yzahwadeqrj7t3znaogbz63vjm" alt="" />
       </div>
     </div>
   );

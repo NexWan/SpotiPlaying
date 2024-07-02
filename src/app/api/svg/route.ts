@@ -12,11 +12,12 @@ export async function GET(req:Request, res:Response) {
     const userData = await getUserProfile(token);
     const name = userData.name;
     const artist = userData.artist;
-    const image = userData.image;
+    var image = userData.image;
     const playing = userData.playing;
     const album = userData.album;
-
-    const svgContent = genSvg(name, artist, image, playing, album);
+    image = `data:image/jpeg;base64,${await imgToBase64(image)}`
+    const spotiImage = `data:image/jpeg;base64,${await imgToBase64('http://localhost:3000/assets/spotify.png')}`
+    const svgContent = genSvg(name, artist, image, playing, album, spotiImage);
   
     // Send SVG content
     return new Response(
@@ -29,11 +30,18 @@ export async function GET(req:Request, res:Response) {
     )
   }
 
-  const genSvg = (songName:String, artistName:String, albumArt:string, playing:Boolean, albumName:String) => {
+  const imgToBase64 = async (url:string) => {
+    const response = await fetch(url);
+    const imageBuffer = await response.arrayBuffer();
+    return Buffer.from(imageBuffer).toString('base64');
+  }
+
+  const genSvg = (songName:String, artistName:String, albumArt:string, playing:Boolean, albumName:String, spotiImage:String) => {
     return `
     <svg viewBox="0 0 400 800" width="400px" height="800px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml">
       <foreignObject x="0" y="0" width="400px" height="800px">
         <style>
+          @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&amp;display=swap');
           .mainContainer {
             display: flex;
             align-items: center;
@@ -41,9 +49,10 @@ export async function GET(req:Request, res:Response) {
             text-align: center;
             border-radius: 20px;
             --tw-bg-opacity: 1;
-            background-color: #121212;
+            background-image: radial-gradient( circle 815px at 23.4% -21.8%,  rgba(9,29,85,1) 0.2%, rgba(0,0,0,1) 100.2% );
             width: 400px;
             height: 600px;
+            col-gap: 1px;
           }
 
           .flex {
@@ -67,11 +76,15 @@ export async function GET(req:Request, res:Response) {
           p,h1 {
             color: white;
             font-family: 'Montserrat', sans-serif;
-            line-height: 0.5;
+            line-height: 1;
+            margin:10px;
           }
 
           .title {
-            font-size: 32px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #1ED760;
+            margin-top: 20px;
           }
 
           @keyframes quiet {
@@ -173,20 +186,20 @@ export async function GET(req:Request, res:Response) {
 
         </style>
         <div class="mainContainer" xmlns="http://www.w3.org/1999/xhtml">
-          <p class="title">${playing ? "Playing" : "Last Played"}</p>
+          <p class="title">${playing ? "Now Playing" : "Last Played"}</p>
           <p> ${songName} </p>
-          <img src='${albumArt}' class='albumArt' alt="Album cover" />
+          <img src='${albumArt}' class='albumArt' style='margin:10px;' alt="Album cover" />
           <div class="flex" style='padding:20px;'>
-            <img class='spotifyLogo' src='http://localhost:3000/assets/spotify.png' alt="Album cover" />
+            <img class='spotifyLogo' src='${spotiImage}' alt="Album cover"></img>
             <div class="boxContainer">
               ${Array.from({ length: 8 }, (_, i) => (
                 `<div class="box box${i + 1}"></div>`
               ))}
             </div>
           </div>
-          <p>Album</p>
+          <p style='font-weight: bold;'>Album</p>
           <p>${albumName}</p>
-          <p>Artist</p>
+          <p style='font-weight: bold;'>Artist</p>
           <p>${artistName}</p>
         </div>
       </foreignObject>
