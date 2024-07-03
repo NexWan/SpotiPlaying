@@ -31,7 +31,7 @@ As you can see it uses url?userId=.... in order to fetch the user last played in
 ## What's missing?
 - ~~The main problem right now it's how to obfuscate the user auth token, since I don't want to expose it on the url I'm trying to figure out a relationship between userid and auth token using vercel databases. Might end up changing the provider depending on if I figure out something.~~ 
 - Personalization of the card
-- Converting HTML to IMG, I'm still searching for a library to do this!
+- ~~Converting HTML to IMG, I'm still searching for a library to do this!~~
 - ~~Figuring out how to refresh the token since right now I think it dies at 1 hour and you'll need to re-login to acess the embed.~~
 
 ## Run on local
