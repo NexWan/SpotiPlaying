@@ -16,6 +16,7 @@ export async function GET(req:Request, res:Response) {
     const playing = userData.playing;
     const album = userData.album;
     image = `data:image/jpeg;base64,${await imgToBase64(image)}`
+    const nameLength = name.length;
     const spotiImage = `data:image/jpeg;base64,${await imgToBase64('https://spoti-playing.vercel.app/assets/spotify.png')}`
     const svgContent = compact === 'true' ? compactSvg(name, artist, image, playing, album, spotiImage) : genSvg(name, artist, image, playing, album, spotiImage);
     // Send SVG content
@@ -246,32 +247,45 @@ export async function GET(req:Request, res:Response) {
               overflow: hidden;
             }
 
-            p,h1,span {
+            p,h1 {
               color: white;
               font-family: 'Montserrat', sans-serif;
               line-height: 1.2;
               margin:5px;
             }
 
-            .songTextContainer {
-              display: flex;
-              white-space: nowrap;
-              animation: move-words linear infinite;
-              position: relative;
+            .song-container {
               overflow: hidden;
+              white-space: nowrap;
             }
 
-            .songText {
-              padding-right: 50px; /* Space between repeats */
-              width: 100%; 
+            .song-container::before {
+              content: '\\00a0';
             }
 
-            @keyframes move-words {
+            .scrolling {
+              {# animation: marquee 8s linear infinite;
+              display: block;
+              min-width: 100%;
+              position: absolute;
+              left: 0;
+              top: 0;
+              white-space: nowrap; #}
+              color: white;
+              font-family: 'Montserrat', sans-serif;
+              line-height: 1.2;
+
+              animation: marquee 8s linear infinite;
+              display: inline-block;
+              padding-right: 20px;
+            }
+
+            @keyframes marquee {
               from {
                 transform: translateX(0);
               }
               to {
-                transform: translateX(-50%);
+                transform: translateX(-100%);
               }
             }
 
@@ -288,32 +302,15 @@ export async function GET(req:Request, res:Response) {
             <img src='${albumArt}' class='albumArt' style='margin:10px;' alt="Album cover" />
             <div style='padding:20px;' class='dataContainer'>
               <p style='font-weight: bold;'>${playing ? "Now Playing" : "Last Played"}</p>
-             <div class="songTextContainer">
-                <span class="songText" id='text1'>${songName}</span>
-                <span class="songText" id='text2'>${songName}</span>
-             </div>
+              <div class='song-container'>
+                <div class='scrolling'>${songName}</div>
+                <div class='scrolling' aria-hidden="true">${songName}</div>
+                <div class='scrolling' aria-hidden="true">${songName}</div>
+              </div>
               <p>${albumName}</p>
               <p>${artistName}</p>
             </div>
           </div>
-          <script>
-            document.addEventListener('DOMContentLoaded', () => {
-            const dataContainer = document.querySelector('.dataContainer');
-            const songTextContainer = document.querySelector('.songTextContainer');
-            const songTextWidth = document.querySelector('.songText').offsetWidth;
-            const animationDuration = songTextWidth / 100; // Adjust speed here
-            const songText = document.querySelectorAll('.songText');
-            if (songTextWidth > dataContainer.offsetWidth) {
-              songTextContainer.style.animationDuration = (animationDuration) + 's';
-            }else {
-              songTextContainer.style.animation = 'none';
-              songTextContainer.style.justifyContent = 'center';
-              songText[1].style.display = 'none';
-              songText[0].style.display = 'block';
-              songText[0].style.paddingRight = '0';
-            }
-          });
-          </script>
         </foreignObject>
       </svg>
 
