@@ -1,14 +1,14 @@
 import { getTokenByUserId, getUserProfile, validateTokenView } from "@/app/utils/spotify";
-import type { NextRequest } from "next/server";
 
 export async function GET(req:Request, res:Response) {
     // Set Content-Type for SVG
     var url = new URL(req.url);
     const userId = url.searchParams.get("userId") || '';
+    const compact = url.searchParams.get("compact") || '';
     console.log(userId);
+    console.log(compact, 'compact');
     const storedTokens = await getTokenByUserId(userId);
     const token = await validateTokenView(storedTokens.auth, storedTokens.refresh);
-    console.log(token);
     const userData = await getUserProfile(token);
     const name = userData.name;
     const artist = userData.artist;
@@ -17,8 +17,7 @@ export async function GET(req:Request, res:Response) {
     const album = userData.album;
     image = `data:image/jpeg;base64,${await imgToBase64(image)}`
     const spotiImage = `data:image/jpeg;base64,${await imgToBase64('https://spoti-playing.vercel.app/assets/spotify.png')}`
-    const svgContent = genSvg(name, artist, image, playing, album, spotiImage);
-  
+    const svgContent = compact === 'true' ? compactSvg(name, artist, image, playing, album, spotiImage) : genSvg(name, artist, image, playing, album, spotiImage);
     // Send SVG content
     return new Response(
       svgContent,
@@ -204,5 +203,119 @@ export async function GET(req:Request, res:Response) {
         </div>
       </foreignObject>
     </svg>
+    `
+  }
+
+  const compactSvg = (songName:String, artistName:String, albumArt:string, playing:Boolean, albumName:String, spotiImage:String) => {
+    return `
+      <svg viewBox="0 0 410 160" width="410px" height="160px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+        <foreignObject x="0" y="0" width="410px" height="160px">
+          <style>
+            @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&amp;display=swap');
+            .mainContainer {
+              display: flex;
+              align-items: center;
+              flex-direction: row;
+              text-align: center;
+              border-radius: 20px;
+              --tw-bg-opacity: 1;
+              background: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%), linear-gradient(to top, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.25) 200%);
+              background-blend-mode: multiply;
+              width: 400px;
+              height: 150px;
+              col-gap: 1px;
+              box-shadow: -1px 5px 9px 2px rgba(0,0,0,0.7);
+              -webkit-box-shadow: -1px 5px 9px 2px rgba(0,0,0,0.7);
+              -moz-box-shadow: -1px 5px 9px 2px rgba(0,0,0,0.7);
+            }
+
+            .albumArt {
+              width: 100px;
+              height: 100px;
+              border-radius: 50%;
+              animation: spin 4s linear infinite;
+            }
+
+            .dataContainer {
+              position: relative;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              width: 100%;
+              overflow: hidden;
+            }
+
+            p,h1,span {
+              color: white;
+              font-family: 'Montserrat', sans-serif;
+              line-height: 1.2;
+              margin:5px;
+            }
+
+            .songTextContainer {
+              display: flex;
+              white-space: nowrap;
+              animation: move-words linear infinite;
+              position: relative;
+              overflow: hidden;
+            }
+
+            .songText {
+              padding-right: 50px; /* Space between repeats */
+              width: 100%; 
+            }
+
+            @keyframes move-words {
+              from {
+                transform: translateX(0);
+              }
+              to {
+                transform: translateX(-50%);
+              }
+            }
+
+            @keyframes spin {
+              from {
+                  transform:rotate(0deg);
+              }
+              to {
+                  transform:rotate(360deg);
+              }
+          }
+          </style>
+          <div class="mainContainer" xmlns="http://www.w3.org/1999/xhtml">
+            <img src='${albumArt}' class='albumArt' style='margin:10px;' alt="Album cover" />
+            <div style='padding:20px;' class='dataContainer'>
+              <p style='font-weight: bold;'>${playing ? "Now Playing" : "Last Played"}</p>
+             <div class="songTextContainer">
+                <span class="songText" id='text1'>${songName}</span>
+                <span class="songText" id='text2'>${songName}</span>
+             </div>
+              <p>${albumName}</p>
+              <p>${artistName}</p>
+            </div>
+          </div>
+          <script>
+            document.addEventListener('DOMContentLoaded', () => {
+            const dataContainer = document.querySelector('.dataContainer');
+            const songTextContainer = document.querySelector('.songTextContainer');
+            const songTextWidth = document.querySelector('.songText').offsetWidth;
+            const animationDuration = songTextWidth / 100; // Adjust speed here
+            const songText = document.querySelectorAll('.songText');
+            if (songTextWidth > dataContainer.offsetWidth) {
+              songTextContainer.style.animationDuration = (animationDuration) + 's';
+            }else {
+              songTextContainer.style.animation = 'none';
+              songTextContainer.style.justifyContent = 'center';
+              songText[1].style.display = 'none';
+              songText[0].style.display = 'block';
+              songText[0].style.paddingRight = '0';
+            }
+          });
+          </script>
+        </foreignObject>
+      </svg>
+
     `
   }

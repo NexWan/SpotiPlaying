@@ -6,6 +6,7 @@ import { useState } from 'react';
 const Home = () => {
   var [authToken, setAuthToken] = useState('');
   var [userId, setUserId] = useState('');
+  var [isCompact, setIsCompact] = useState(false);
 
   fetch('https://spoti-playing.vercel.app/api/getToken',{
     method: 'GET',
@@ -35,11 +36,26 @@ const Home = () => {
       <div className=' max-w-4xl flex flex-col mx-auto justify-center items-center bg-white p-4'>
         <h1>Welcome to  SpotiPlaying!</h1>
         <p>Here you can see the preview of your spotify card!</p>
-        <div>
-          <img src="https://spoti-playing.vercel.app/api/svg?userId=31yzahwadeqrj7t3znaogbz63vjm" alt="" />
+        <br />
+        <p>You can select between the normal card or a compact one!</p>
+        <div className='flex flex-row mx-auto'>
+          <button className='bg-gray-800 text-white p-2 m-2 rounded-md' onClick={() =>setIsCompact(false)}>Normal</button>
+          <button className='bg-gray-800 text-white p-2 m-2 rounded-md' onClick={() =>setIsCompact(true)}>Compact</button>
         </div>
-        <p className='my-5'>You can access the link of the embed through this link:</p>
-        <a href={`https://spoti-playing.vercel.app/api/svg?userId=${userId}`} className='underline underline-offset-2'>https://spoti-playing.vercel.app/api/svg?userId={userId}</a>
+        {!isCompact && 
+        (<>
+        <div>
+          <img src={`https://spoti-playing.vercel.app/api/svg?userId=${userId}`} alt="" />
+        </div><p className='my-5'>You can access the link of the embed through this link:</p><a href={`https://spoti-playing.vercel.app/api/svg?userId=${userId}`} className='underline underline-offset-2'>https://spoti-playing.vercel.app/api/svg?userId={userId}</a>
+        </>
+        )}
+        {isCompact && 
+        (<>
+        <div>
+          <img src={`https://spoti-playing.vercel.app/api/svg?userId=${userId}&compact=true`} alt="" />
+        </div><p className='my-5'>You can access the link of the embed through this link:</p><a href={`https://spoti-playing.vercel.app/api/svg?userId=${userId}&compact=true`} className='underline underline-offset-2'>https://spoti-playing.vercel.app/api/compact?userId={userId}</a>
+        </>
+        )}
         <p className=' text-red-400'>Found any bug? Create an issue on the <a className='underline' href='https://github.com/NexWan/SpotiPlaying/issues'>GitHub repo</a></p>
       </div>
       
