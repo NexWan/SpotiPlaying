@@ -17,14 +17,13 @@ I'm creating this app using:
 - Refresh token is working
 - Recently played songs now are working
 - Connection between the database and cookies are probably working (not fully tested yet)
-### Image of how it looks at the moment
-<img src='./gitImgs/demofull.svg'>  
-
 ## Main page (at the moment)
+<img src='./gitImgs/preview1.png'>  
+
 <img src='./gitImgs/preview2.png'>
 
-## Preview of the embeded card
-<img src='./gitImgs/preview3.png'>   
+## Full Version
+<img src='./gitImgs/demofull.svg'>  
 
 ## Compact Version
 <img src='./gitImgs/democompact.svg'>
