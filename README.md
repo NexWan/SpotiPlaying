@@ -18,13 +18,16 @@ I'm creating this app using:
 - Recently played songs now are working
 - Connection between the database and cookies are probably working (not fully tested yet)
 ### Image of how it looks at the moment
-<img src='./gitImgs/preview.png'>  
+<img src='./gitImgs/demofull.svg'>  
 
 ## Main page (at the moment)
 <img src='./gitImgs/preview2.png'>
 
 ## Preview of the embeded card
 <img src='./gitImgs/preview3.png'>   
+
+## Compact Version
+<img src='./gitImgs/democompact.svg'>
 
 As you can see it uses url?userId=.... in order to fetch the user last played instead of exposing your auth token!
 
