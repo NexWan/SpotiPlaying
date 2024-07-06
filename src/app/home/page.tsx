@@ -51,7 +51,6 @@ const Home = () => {
         )}
         {isCompact && 
         (<>
-        <p className='my-5'>There is a bug in the preview of the compact version, it shouldn&amp;t happen when using in your html</p>
         <div>
           <img src={`https://spoti-playing.vercel.app/api/svg?userId=${userId}&compact=true`} alt="" />
         </div><p className='my-5'>You can access the link of the embed through this link:</p><a href={`https://spoti-playing.vercel.app/api/svg?userId=${userId}&compact=true`} className='underline underline-offset-2'>https://spoti-playing.vercel.app/api/compact?userId={userId}</a>
