@@ -10,11 +10,12 @@ export async function GET(req:Request, res:Response) {
     const storedTokens = await getTokenByUserId(userId);
     const token = await validateTokenView(storedTokens.auth, storedTokens.refresh);
     const userData = await getUserProfile(token);
-    const name = userData.name;
-    const artist = userData.artist;
+    const name = normalizeText(userData.name);
+    console.log(name)
+    const artist = normalizeText(userData.artist);
     var image = userData.image;
     const playing = userData.playing;
-    const album = userData.album;
+    const album = normalizeText(userData.album)
     image = `data:image/jpeg;base64,${await imgToBase64(image)}`
     const nameLength = name.length;
     const spotiImage = `data:image/jpeg;base64,${await imgToBase64('https://spoti-playing.vercel.app/assets/spotify.png')}`
@@ -28,6 +29,10 @@ export async function GET(req:Request, res:Response) {
         },
       }
     )
+  }
+
+  const normalizeText = (text:String) => {
+    return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
   const imgToBase64 = async (url:string) => {
@@ -313,6 +318,5 @@ export async function GET(req:Request, res:Response) {
           </div>
         </foreignObject>
       </svg>
-
     `
   }
