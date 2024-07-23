@@ -262,6 +262,7 @@ export async function GET(req:Request, res:Response) {
             .song-container {
               overflow: hidden;
               white-space: nowrap;
+              color: white;
             }
 
             .song-container::before {
