@@ -225,14 +225,11 @@ export async function GET(req:Request, res:Response) {
               text-align: center;
               border-radius: 20px;
               --tw-bg-opacity: 1;
-              background: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%), linear-gradient(to top, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.25) 200%);
-              background-blend-mode: multiply;
+              background-image: radial-gradient( circle 815px at 23.4% -21.8%,  rgba(9,29,85,1) 0.2%, rgba(0,0,0,1) 100.2% );
               width: 400px;
               height: 150px;
               col-gap: 1px;
-              box-shadow: -1px 5px 9px 2px rgba(0,0,0,0.7);
-              -webkit-box-shadow: -1px 5px 9px 2px rgba(0,0,0,0.7);
-              -moz-box-shadow: -1px 5px 9px 2px rgba(0,0,0,0.7);
+              margin-left: 5px;
             }
 
             .albumArt {
