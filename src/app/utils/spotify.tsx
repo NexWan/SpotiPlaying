@@ -4,7 +4,7 @@ import { sql } from "@vercel/postgres";
 export const getUserProfile = async (token: string) => {
   var isPlaying = false;
   console.log("Fetching user profile with token:", token); // Log the token for debugging
-  var res = { name: "", album: "", artist: "", image: "", playing: false };
+  var res = { name: "", album: "", artist: "", image: "", playing: false, uri: "" };
   try {
     const response = await fetch("https://api.spotify.com/v1/me/player", {
       // Changed endpoint to /me
@@ -25,6 +25,7 @@ export const getUserProfile = async (token: string) => {
         artist: data.item.artists[0].name,
         image: data.item.album.images[0].url,
         playing: isPlaying,
+        uri: data.item.uri,
       };
     } catch (e) {
       res = await fetch(
@@ -49,6 +50,7 @@ export const getUserProfile = async (token: string) => {
             artist: ret.artists[0].name,
             image: ret.album.images[0].url,
             playing: isPlaying,
+            uri: ret.uri,
           };
         });
     }

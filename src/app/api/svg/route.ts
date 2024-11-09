@@ -19,7 +19,8 @@ export async function GET(req:Request, res:Response) {
     image = `data:image/jpeg;base64,${await imgToBase64(image)}`
     const nameLength = name.length;
     const spotiImage = `data:image/jpeg;base64,${await imgToBase64('https://spoti-playing.vercel.app/assets/spotify.png')}`
-    const svgContent = compact === 'true' ? compactSvg(name, artist, image, playing, album, spotiImage) : genSvg(name, artist, image, playing, album, spotiImage);
+    const uri = userData.uri;
+    const svgContent = compact === 'true' ? compactSvg(name, artist, image, playing, album, spotiImage, uri) : genSvg(name, artist, image, playing, album, spotiImage, uri);
     // Send SVG content
     return new Response(
       svgContent,
@@ -41,9 +42,9 @@ export async function GET(req:Request, res:Response) {
     return Buffer.from(imageBuffer).toString('base64');
   }
 
-  const genSvg = (songName:String, artistName:String, albumArt:string, playing:Boolean, albumName:String, spotiImage:String) => {
+  const genSvg = (songName:String, artistName:String, albumArt:string, playing:Boolean, albumName:String, spotiImage:String, uri:String) => {
     return `
-    <svg viewBox="0 0 400 600" width="400px" height="600px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <svg viewBox="0 0 400 600" width="400px" height="600px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml" onclick="window.location.href='${uri}'">
       <foreignObject x="0" y="0" width="400px" height="800px">
         <style>
           @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&amp;display=swap');
@@ -212,9 +213,9 @@ export async function GET(req:Request, res:Response) {
     `
   }
 
-  const compactSvg = (songName:String, artistName:String, albumArt:string, playing:Boolean, albumName:String, spotiImage:String) => {
+  const compactSvg = (songName:String, artistName:String, albumArt:string, playing:Boolean, albumName:String, spotiImage:String, uri:String) => {
     return `
-      <svg viewBox="0 0 410 160" width="410px" height="160px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+      <svg viewBox="0 0 410 160" width="410px" height="160px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml" onclick="window.location.href='${uri}'">
         <foreignObject x="0" y="0" width="410px" height="160px">
           <style>
             @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&amp;display=swap');
