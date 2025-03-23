@@ -47,148 +47,227 @@ export async function GET(req:Request, res:Response) {
     <svg viewBox="0 0 400 600" width="400px" height="600px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml" onclick="window.location.href='${uri}'">
       <foreignObject x="0" y="0" width="400px" height="800px">
         <style>
-          @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&amp;display=swap');
-          .mainContainer {
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            text-align: center;
-            border-radius: 20px;
-            --tw-bg-opacity: 1;
-            background-image: radial-gradient( circle 815px at 23.4% -21.8%,  rgba(9,29,85,1) 0.2%, rgba(0,0,0,1) 100.2% );
-            width: 400px;
-            height: 600px;
-            col-gap: 1px;
-          }
+            @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
-          .flex {
-            display: flex;
-            flex-direction: row;
-            width: 100%;
-            height: fit-content;
-            left: 100%;
-            align-items: center;
-            justify-content: center;
-            row-gap: 10px;
-          }
+            .mainContainer {
+              display: -webkit-flex;
+              display: flex;
+              -webkit-align-items: center;
+                      align-items: center;
+              -webkit-flex-direction: column;
+                      flex-direction: column;
+              text-align: center;
+              border-radius: 20px;
+              background-image: radial-gradient(circle 815px at 23.4% -21.8%, rgba(9,29,85,1) 0.2%, rgba(0,0,0,1) 100.2%);
+              width: 400px;
+              height: 600px;
+              column-gap: 1px;
+            }
 
-          .spotifyLogo {
-            width: 50px;
-            height: 50px;
-            padding-right: 10px;
-            font-weight: bold;
-          }
+            .flex {
+              display: -webkit-flex;
+              display: flex;
+              -webkit-flex-direction: row;
+                      flex-direction: row;
+              width: 100%;
+              height: -webkit-fit-content;
+              height: fit-content;
+              left: 100%;
+              -webkit-align-items: center;
+                      align-items: center;
+              -webkit-justify-content: center;
+                      justify-content: center;
+              row-gap: 10px;
+            }
 
-          p,h1 {
-            color: white;
-            font-family: 'Montserrat', sans-serif;
-            line-height: 1;
-            margin:10px;
-          }
+            .spotifyLogo {
+              width: 50px;
+              height: 50px;
+              padding-right: 10px;
+              font-weight: bold;
+            }
 
-          .title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #1ED760;
-            margin-top: 20px;
-          }
+            p, h1 {
+              color: white;
+              font-family: 'Montserrat', sans-serif;
+              line-height: 1;
+              margin: 10px;
+            }
 
-          @keyframes quiet {
-            25%{
-              transform: scaleY(.6);
+            .title {
+              font-size: 24px;
+              font-weight: bold;
+              color: #1ED760;
+              margin-top: 20px;
             }
-            50%{
-              transform: scaleY(.4);
-            }
-            75%{
-              transform: scaleY(.8);
-            }
-          }
-        
-          @keyframes normal {
-            25%{
-              transform: scaleY(1);
-            }
-            50%{
-              transform: scaleY(.4);
-            }
-            75%{
-              transform: scaleY(.6);
-            }
-          }
-          @keyframes loud {
-            25%{
-              transform: scaleY(1);
-            }
-            50%{
-              transform: scaleY(.4);
-            }
-            75%{
-              transform: scaleY(1.2);
-            }
-          }
-          
-          .boxContainer{
-            display: flex;
-            justify-content: space-between;
-            height: 64px;
-            --boxSize: 16px;
-            --gutter: 8px;
-            width: calc((var(--boxSize) + var(--gutter)) * 5);
-          }
-          
-          .box{
-            transform: scaleY(.4);
-            height: 100%;
-            width: calc(var(--boxSize) * 0.5);
-            background: #1ED760;
-            animation-duration: 1.2s;
-            animation-timing-function: ease-in-out;
-            animation-iteration-count: infinite;
-            border-radius: 8px;
-          }
-          
-          .box1{
-            animation-name: quiet;
-          }
-          
-          .box2{
-            animation-name: normal;
-          }
-          
-          .box3{
-            animation-name: quiet;
-          }
-          
-          .box4{
-            animation-name: loud;
-          }
-          
-          .box5{
-            animation-name: quiet;
-          }
 
-          .box6 {
-            animation-name: normal;
-          }
-          
-          .box7 {
-            animation-name: loud;
-          }
-          
-          .box8 {
-            animation-name: quiet;
-          }
-          
-          .box9 {
-            animation-name: normal;
-          }
+            /* Vendor prefixed keyframes for Safari */
+            @-webkit-keyframes quiet {
+              25% {
+                -webkit-transform: scaleY(.6);
+                        transform: scaleY(.6);
+              }
+              50% {
+                -webkit-transform: scaleY(.4);
+                        transform: scaleY(.4);
+              }
+              75% {
+                -webkit-transform: scaleY(.8);
+                        transform: scaleY(.8);
+              }
+            }
 
-          .albumArt {
-            width: 200px;
-            height: 200px;
-            border-radius: 20px;
-          }
+            @keyframes quiet {
+              25% {
+                -webkit-transform: scaleY(.6);
+                        transform: scaleY(.6);
+              }
+              50% {
+                -webkit-transform: scaleY(.4);
+                        transform: scaleY(.4);
+              }
+              75% {
+                -webkit-transform: scaleY(.8);
+                        transform: scaleY(.8);
+              }
+            }
+
+            @-webkit-keyframes normal {
+              25% {
+                -webkit-transform: scaleY(1);
+                        transform: scaleY(1);
+              }
+              50% {
+                -webkit-transform: scaleY(.4);
+                        transform: scaleY(.4);
+              }
+              75% {
+                -webkit-transform: scaleY(.6);
+                        transform: scaleY(.6);
+              }
+            }
+
+            @keyframes normal {
+              25% {
+                -webkit-transform: scaleY(1);
+                        transform: scaleY(1);
+              }
+              50% {
+                -webkit-transform: scaleY(.4);
+                        transform: scaleY(.4);
+              }
+              75% {
+                -webkit-transform: scaleY(.6);
+                        transform: scaleY(.6);
+              }
+            }
+
+            @-webkit-keyframes loud {
+              25% {
+                -webkit-transform: scaleY(1);
+                        transform: scaleY(1);
+              }
+              50% {
+                -webkit-transform: scaleY(.4);
+                        transform: scaleY(.4);
+              }
+              75% {
+                -webkit-transform: scaleY(1.2);
+                        transform: scaleY(1.2);
+              }
+            }
+
+            @keyframes loud {
+              25% {
+                -webkit-transform: scaleY(1);
+                        transform: scaleY(1);
+              }
+              50% {
+                -webkit-transform: scaleY(.4);
+                        transform: scaleY(.4);
+              }
+              75% {
+                -webkit-transform: scaleY(1.2);
+                        transform: scaleY(1.2);
+              }
+            }
+
+            .boxContainer {
+              display: -webkit-flex;
+              display: flex;
+              -webkit-justify-content: space-between;
+                      justify-content: space-between;
+              height: 64px;
+              --boxSize: 16px;
+              --gutter: 8px;
+              width: calc((var(--boxSize) + var(--gutter)) * 5);
+            }
+
+            .box {
+              -webkit-transform: scaleY(.4);
+                      transform: scaleY(.4);
+              height: 100%;
+              width: calc(var(--boxSize) * 0.5);
+              background: #1ED760;
+              -webkit-animation-duration: 1.2s;
+                      animation-duration: 1.2s;
+              -webkit-animation-timing-function: ease-in-out;
+                      animation-timing-function: ease-in-out;
+              -webkit-animation-iteration-count: infinite;
+                      animation-iteration-count: infinite;
+              border-radius: 8px;
+            }
+
+            .box1 {
+              -webkit-animation-name: quiet;
+                      animation-name: quiet;
+            }
+
+            .box2 {
+              -webkit-animation-name: normal;
+                      animation-name: normal;
+            }
+
+            .box3 {
+              -webkit-animation-name: quiet;
+                      animation-name: quiet;
+            }
+
+            .box4 {
+              -webkit-animation-name: loud;
+                      animation-name: loud;
+            }
+
+            .box5 {
+              -webkit-animation-name: quiet;
+                      animation-name: quiet;
+            }
+
+            .box6 {
+              -webkit-animation-name: normal;
+                      animation-name: normal;
+            }
+
+            .box7 {
+              -webkit-animation-name: loud;
+                      animation-name: loud;
+            }
+
+            .box8 {
+              -webkit-animation-name: quiet;
+                      animation-name: quiet;
+            }
+
+            .box9 {
+              -webkit-animation-name: normal;
+                      animation-name: normal;
+            }
+
+            .albumArt {
+              width: 200px;
+              height: 200px;
+              border-radius: 20px;
+            }
 
         </style>
         <div class="mainContainer" xmlns="http://www.w3.org/1999/xhtml">
